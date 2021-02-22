@@ -10,7 +10,10 @@
   
   //*MOSFET MOTOR CONTROLLER*//
     const int MOSFET = 6; //MOSFET PWM output goes through pin 6 -- this needs to be a PWN pin. On the Nano Every that's D3, D5, D6, D9, D10
-    int pwmSpeed = 48; // This sets the speed of the spooler -- we want this to be faster than the pulling speed of the tuggbo, but the spool diameter is much larger than Tuggbo's wheel, so let's try 30 for now
+    int pwmSpeed = 52; //This sets the speed of the spooler -- we want this to be faster than the pulling speed of the tuggbo
+                       //70
+    int ChokeTime = 1; //This sets the amount of engine off-time per cycle -- the engine goes on for 50 milliseconds, and the off for the set amount of choke time
+                        //Use this variable to control the spooling speed, once the appropriate pwmSpeed has been found to generate enough, but not too much tension 
     
 void setup() {
   
@@ -27,14 +30,18 @@ void setup() {
 
 void loop() {
 
-  //Starts the motor in forward direction at the motor starting speed
+  //The interplay between the PWM speed (MOSFET) and the two delay variables below, determines the speed and tension of the spooler. Higher PWM values generate more speed and tension,
+  //while increasing the second delay variable reduces speed, but maintains the same amount of tension. It's a bit of a fiddly guessing game, but there's a lot of room for error
+  
+  
+  //Puts the motor on at the set PWM speed for as long as stated in the delay
   analogWrite(MOSFET, pwmSpeed);
  
 delay(50);
 
-  //Starts the motor in forward direction at the motor starting speed
+  //Turns the motor off for as long as stated in the delay
   analogWrite(MOSFET, 0);
  
-delay(50);
+delay(ChokeTime);
 
 }
