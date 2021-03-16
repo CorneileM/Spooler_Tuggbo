@@ -10,10 +10,15 @@
   
   //*MOSFET MOTOR CONTROLLER*//
     const int MOSFET = 6; //MOSFET PWM output goes through pin 6 -- this needs to be a PWN pin. On the Nano Every that's D3, D5, D6, D9, D10
-    int pwmSpeed = 52; //This sets the speed of the spooler -- we want this to be faster than the pulling speed of the tuggbo
-                       //70
+    int pwmSpeed = 46; //This sets the speed of the spooler -- we want this to be faster than the pulling speed of the tuggbo
+                       //51 seems stable
     int ChokeTime = 1; //This sets the amount of engine off-time per cycle -- the engine goes on for 50 milliseconds, and the off for the set amount of choke time
                         //Use this variable to control the spooling speed, once the appropriate pwmSpeed has been found to generate enough, but not too much tension 
+
+//**TIMING VARIABLES**//
+
+    unsigned long previousMillis = 0;        // will store last time heater was on
+    long PWMupInterval = 900000;          // milliseconds of off-time 1800000
     
 void setup() {
   
@@ -44,4 +49,15 @@ delay(50);
  
 delay(ChokeTime);
 
+  // check to see if it's time to change the state of the heater
+  unsigned long currentMillis = millis();
+  int pwmSpeedNEW;
+
+  if(currentMillis - previousMillis >= PWMupInterval)
+  {
+    pwmSpeedNEW = pwmSpeed + 1;
+    previousMillis = currentMillis;  // Remember the time
+    pwmSpeed = pwmSpeedNEW;
+  }
+  Serial.println(pwmSpeed);
 }
