@@ -1,8 +1,6 @@
-//This sketch governs the behaviour of a filament pulling device designed to control the diameter of filament.
-//The diameter of the filament is controlled by the speed of a DC motor which pulls filament from an extruder (Filabot EX2): faster = thinner filament; slower = thicker filament.
-//The speed of the DC motor is adjusted based on the measured filament diameter which is read from a Mitutoyo digital plunge-dial indicator, to obtain a stable filament diameter.
-
-//This sketch incoporates code from SSpence for reading data from the Mitutoyo plangue dial: https://www.instructables.com/id/Interfacing-a-Digital-Micrometer-to-a-Microcontrol/ 
+//This sketch governs the behaviour of a filament spooler to be used in conjuction with Tuggbo [add link].
+//The spooler uses a simple DC motor that generates a pesudo-clutch effect by attaching a MOSFET motor controller to the DC engine and cycling the motor off very briefly (ChokeTime) in between longer intervals of driving the motor.
+//The ChokeTime and motor speed can be adjusted until the spooler pulls filament from Tuggbo with the right amount of tension (i.e, keeps the filament tight and spooling neatly, without pulling so hard that the Tuggbo falls over.
 
 //**LIBRARIES**//
 
